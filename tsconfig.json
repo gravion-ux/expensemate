@@ -1,0 +1,1 @@
+{"compilerOptions":{"allowSyntheticDefaultImports":true,"esModuleInterop":true,"forceConsistentCasingInFileNames":true,"isolatedModules":true,"jsx":"react-native","module":"ESNext","moduleResolution":"bundler","noEmit":true,"skipLibCheck":true,"strict":true,"target":"ESNext","types":["jest"]},"exclude":["node_modules"],"include":["App.tsx","src/**/*","__tests__/**/*"]}
