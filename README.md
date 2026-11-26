@@ -1,6 +1,10 @@
+<p align="center"><img src="assets/banner.svg" alt="expensemate banner" width="100%"/></p>
+
 # ExpenseMate
 
-A clean, fully offline expense tracker for Android and iOS, built with React Native + Expo.
+[![CI](https://github.com/gravion-ux/expensemate/actions/workflows/ci.yml/badge.svg)](https://github.com/gravion-ux/expensemate/actions/workflows/ci.yml)
+
+**A clean, fully offline expense tracker for Android and iOS, built with React Native + Expo.**
 
 Track daily spending, see where your money goes each month, and keep everything on your own device — no account, no server, no tracking.
 
