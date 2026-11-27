@@ -12,6 +12,21 @@ export type ExpenseAction =
  * Pure reducer for the expense list — the heart of the store.
  * Kept free of React / AsyncStorage so it is fully unit-testable.
  */
+function isValidExpense(value: unknown): value is Expense {
+  if (!value || typeof value !== 'object') return false;
+  const e = value as Partial<Expense>;
+  return (
+    typeof e.id === 'string' &&
+    typeof e.amount === 'number' &&
+    Number.isFinite(e.amount) &&
+    typeof e.categoryId === 'string' &&
+    typeof e.note === 'string' &&
+    typeof e.date === 'string' &&
+    typeof e.createdAt === 'number' &&
+    typeof e.updatedAt === 'number'
+  );
+}
+
 export function expenseReducer(state: Expense[], action: ExpenseAction): Expense[] {
   switch (action.type) {
     case 'ADD': {
@@ -31,7 +46,7 @@ export function expenseReducer(state: Expense[], action: ExpenseAction): Expense
     case 'DELETE':
       return state.filter((e) => e.id !== action.id);
     case 'HYDRATE':
-      return Array.isArray(action.expenses) ? action.expenses : state;
+      return Array.isArray(action.expenses) ? action.expenses.filter(isValidExpense) : state;
     case 'CLEAR':
       return [];
     default:

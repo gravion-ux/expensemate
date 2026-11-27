@@ -61,3 +61,11 @@ describe('expenseReducer', () => {
     expect(next).toHaveLength(1);
   });
 });
+
+describe('HYDRATE validation', () => {
+  it('drops malformed stored expenses', () => {
+    const junk = [{ id: 7 }, null, 'x', { ...base, amount: 'lots' }, base] as unknown as Expense[];
+    const next = expenseReducer([], { type: 'HYDRATE', expenses: junk });
+    expect(next).toEqual([base]);
+  });
+});

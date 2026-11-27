@@ -32,9 +32,12 @@ export function formatMoney(amount: number, currencyCode: string = 'INR'): strin
 
 /** Parse user input like "250", "250.5", "₹250" or "1,200" into a number. NaN if invalid. */
 export function parseAmount(input: string): number {
-  const cleaned = input.replace(/[^0-9.]/g, '');
-  if (!cleaned) return NaN;
-  const value = Number(cleaned);
+  // Accept "250", "250.5", "₹250", "1,200" — reject anything with letters,
+  // a sign, or more than one decimal point instead of silently mangling it
+  // (the old strip-everything approach turned "-5" into 5).
+  const trimmed = input.trim().replace(/^[₹$€£]\s*/, '').replace(/,/g, '');
+  if (!/^\d+(\.\d{1,2})?$/.test(trimmed)) return NaN;
+  const value = Number(trimmed);
   return Number.isFinite(value) ? roundMoney(value) : NaN;
 }
 
@@ -56,13 +59,14 @@ const MONTH_NAMES = [
 ];
 
 export function monthLabel(year: number, month: number): string {
-  return `${MONTH_NAMES[month]} ${year}`;
+  const name = MONTH_NAMES[month];
+  return name ? `${name} ${year}` : `${year}`;
 }
 
 /** "2026-11-24" -> "24 Nov 2026" */
 export function formatDate(iso: string): string {
   const [y, m, d] = iso.split('-').map(Number);
-  if (!y || !m || !d) return iso;
+  if (!y || !m || !d || m < 1 || m > 12 || d < 1 || d > 31) return iso;
   return `${d} ${MONTH_NAMES[m - 1].slice(0, 3)} ${y}`;
 }
 

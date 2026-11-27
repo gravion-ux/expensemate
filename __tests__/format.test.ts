@@ -73,3 +73,26 @@ describe('makeId', () => {
     expect(a).not.toBe(b);
   });
 });
+
+describe('parseAmount hardening', () => {
+  it('rejects signs, letters and multiple decimal points', () => {
+    expect(parseAmount('-5')).toBeNaN();
+    expect(parseAmount('12a34')).toBeNaN();
+    expect(parseAmount('1.2.3')).toBeNaN();
+    expect(parseAmount('250.555')).toBeNaN();
+  });
+  it('still accepts grouped and symbol-prefixed amounts', () => {
+    expect(parseAmount('$1,200.50')).toBe(1200.5);
+    expect(parseAmount(' 42 ')).toBe(42);
+  });
+});
+
+describe('date guards', () => {
+  it('formatDate returns input for out-of-range months', () => {
+    expect(formatDate('2026-13-01')).toBe('2026-13-01');
+    expect(formatDate('2026-00-10')).toBe('2026-00-10');
+  });
+  it('monthLabel never renders undefined', () => {
+    expect(monthLabel(2026, 12)).toBe('2026');
+  });
+});
